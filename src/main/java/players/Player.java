@@ -6,7 +6,10 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Player extends User{
-    public Player() {
+    Origin origin;
+
+    public Player(Origin origin) {
+        this.origin = origin;
     }
 
     public Difficulties selectDifficulty() {
@@ -20,6 +23,16 @@ public class Player extends User{
 
     @Override
     public void select() {
+        switch (this.origin) {
+            case APP:
+                System.out.println("No App yet.");
+                break;
+            case TERMINAL:
+                selectFromTerminal();
+        }
+    }
+
+    private void selectFromTerminal() {
         Scanner scanner = new Scanner(System.in);
         currentSelection = scanner.nextLine();
     }
