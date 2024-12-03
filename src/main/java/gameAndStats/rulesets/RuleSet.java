@@ -7,6 +7,7 @@ import gameAndStats.stats.Results;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 public class RuleSet {
     private static Difficulties difficulty;
@@ -39,21 +40,16 @@ public class RuleSet {
     }
 
     private void createRulesForEntity(Entity e) {
-        addEntitiesItLosesFrom(e);
-        addEntitiesItBeats(e);
+        addEntities(e.getWeakerEntities(), e::addEntityItBeats);
+        addEntities(e.getStrongerEntities(), e::addEntityItLosesFrom);
     }
 
-    private void addEntitiesItBeats(Entity e) {
-        List<String> weakerEntities = e.getWeakerEntities();
-        for (String entity : weakerEntities) {
-            e.addEntityItBeats(findEntityByType(entity));
-        }
-    }
-
-    private void addEntitiesItLosesFrom(Entity e) {
-        List<String> strongerEntities = e.getStrongerEntities();
-        for (String entity : strongerEntities) {
-            e.addEntityItLosesFrom(findEntityByType(entity));
+    private void addEntities(List<String> entities, Consumer<Entity> addEntityMethod) {
+        for (String entity : entities) {
+            Entity foundEntity = findEntityByType(entity);
+            if (foundEntity != null) {
+                addEntityMethod.accept(foundEntity);
+            }
         }
     }
 
