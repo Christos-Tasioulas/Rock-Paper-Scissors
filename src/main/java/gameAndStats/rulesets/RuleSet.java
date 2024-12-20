@@ -33,6 +33,7 @@ public class RuleSet {
         else throw new InvalidRulesException("The game rules are invalid!");
         return result;
     }
+
     protected void createRules() {
         for (Entity entity : allEntities) {
             createRulesForEntity(entity);
